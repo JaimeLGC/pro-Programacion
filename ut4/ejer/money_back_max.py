@@ -11,7 +11,8 @@ def run(to_give_back: float, available_currencies: dict) -> dict:
         if money % currency >= 0:
             ammount = money // currency
             if ammount > 0:
-                money_back[currency] = ammount
+                if ammount <= available_currencies.get(currency):
+                    money_back[currency] = ammount
             money -= currency * ammount
 
     if money == 0:
