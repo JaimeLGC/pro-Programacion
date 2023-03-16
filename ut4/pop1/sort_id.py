@@ -11,5 +11,6 @@ def sort_id(db: list) -> list:
     sorted_db.copy(db)
     for identification in sorted(identifications):
         sorted_db.append(dict(id=identification))
+        
 
     return sorted_db
