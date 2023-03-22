@@ -4,13 +4,13 @@ class MobilePhone:
         self.screen_size = screen_size
         self.num_cores = num_cores
         self.apps = []
-        self.status = 0
+        self.status = False
 
     def power_on(self):
-        self.status = 1
+        self.status = True
 
     def power_off(self):
-        self.status = 0
+        self.status = False
 
     def install_app(self, app: str):
         self.apps.append(app)
@@ -19,6 +19,7 @@ class MobilePhone:
         self.apps.remove(app)
 
 
-mobile1 = MobilePhone("Xiaomi", 6.78, 3)
+mobile1 = MobilePhone("Xiaomi", 6.78, 4)
 
-print(mobile1.manufacturer)
+mobile1.install_app("Telegram")
+print(mobile1.num_cores)
