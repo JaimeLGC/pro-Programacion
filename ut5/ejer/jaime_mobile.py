@@ -14,7 +14,7 @@ class MobilePhone:
 
     def switch(self):
         if self.status:
-            self.status = False
+            not self.status
         elif not self.status:
             self.status = True
             self.power_drain(10)
