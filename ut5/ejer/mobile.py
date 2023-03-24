@@ -48,7 +48,7 @@ class MobilePhone:
             self.apps.remove(app)
 
 
-mobile1 = MobilePhone("Xiaomi", 6.78, 4)
+mobile1 = MobilePhone("Xiaomi", 6.78, 4, 1000)
 
 mobile1.install_app("Telegram")
 print(mobile1.num_cores)
