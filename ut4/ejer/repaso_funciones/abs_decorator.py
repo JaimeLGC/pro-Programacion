@@ -13,4 +13,4 @@ def fabs(func):
 
 @fabs
 def fprod(a: int, b: int):
-    return a * b
+    return a*b
