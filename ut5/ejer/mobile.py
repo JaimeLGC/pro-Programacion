@@ -21,9 +21,9 @@ class MobilePhone:
 
     def power_warning(self):
         if self.status:
-            if self.power == self.power * 0.20:
+            if self.power <= self.power * 0.20 and self.power > self.power * 0.10:
                 print("Aviso, batería baja")
-            elif self.power == self.power * 0.10:
+            elif self.power <= self.power * 0.10 and self.power > 0:
                 print("Aviso, batería MUY baja")
             elif self.power == 0:
                 print("Apagando...")
@@ -49,6 +49,3 @@ class MobilePhone:
 
 
 mobile1 = MobilePhone("Xiaomi", 6.78, 4, 1000)
-
-mobile1.install_app("Telegram")
-print(mobile1.num_cores)
