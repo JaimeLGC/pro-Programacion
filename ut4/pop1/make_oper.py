@@ -14,8 +14,6 @@ def make_oper(oper: str):
                 return num1 * num2
             case "div":
                 return num1 / num2
-            case _:
-                return False
 
     return opers
 
