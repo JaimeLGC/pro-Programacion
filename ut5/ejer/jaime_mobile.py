@@ -17,9 +17,9 @@ class MobilePhone:
             not self.status
         elif not self.status:
             self.status = True
-            self.power_drain(10)
+            self.drain_power(10)
 
-    def power_warning(self):
+    def warn_power(self):
         if self.status:
             if self.power <= self.power * 0.20 and self.power > self.power * 0.10:
                 print("Aviso, batería baja")
@@ -29,21 +29,21 @@ class MobilePhone:
                 print("Apagando...")
                 self.switch()
 
-    def power_drain(self, power_spent):
+    def drain_power(self, power_spent):
         self.power = -power_spent * power_drainage[self.manufacturer]
-        self.power_warning()
+        self.warn_power()
 
     def install_app(self, *apps_to_be_installed: str):
         for app in apps_to_be_installed:
             if app in self.apps:
                 print(f"{app} ya está en el dispositivo")
             else:
-                self.power_drain(30)
+                self.drain_power(30)
                 if self.status:
                     self.apps.append(app)
 
     def uninstall_app(self, app: str):
-        self.power_drain(15)
+        self.drain_power(15)
         if self.status:
             self.apps.remove(app)
 
