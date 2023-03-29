@@ -3,6 +3,8 @@ users = {
     "Jaime": "J41m3",
 }
 
+available_packages = {"VSCode": 8, "Python": 10, "SQLite": 5}
+
 
 class os:
     def __init__(
@@ -12,6 +14,7 @@ class os:
         packages: list,
         version: str,
         ip: str,
+        storage: float,
     ):
 
         self.name = name
@@ -20,8 +23,9 @@ class os:
         self.packages = packages
         self.kernel = True
         self.booted = False
-        self.loged = False
+        self.logged = False
         self.version = version
+        self.storage = storage
 
     @staticmethod
     def check_status(method):
@@ -43,7 +47,7 @@ class os:
         if self.booted:
             if username in users:
                 if password == users[username]:
-                    self.loged = True
+                    self.logged = True
                     print(f"Bienvenido/a {username}")
                 else:
                     print("Contraseña incorrecta, vuelva a intentarlo")
@@ -52,7 +56,7 @@ class os:
 
     @check_status
     def logout(self):
-        self.loged = False
+        self.logged = False
 
     @check_status
     def show_information(self):
@@ -68,8 +72,9 @@ class os:
     @check_status
     def install_package(self, *packages_to_be_installed: str):
         for package in packages_to_be_installed:
-            if package not in self.packages:
+            if package in available_packages and package not in self.packages:
                 self.packages.append(package)
+                self.storage -= available_packages[package]
                 print(f"{package} se ha instalado satisfactoriamente")
             else:
                 print(f"{package} ya está en el sistema")
@@ -87,12 +92,12 @@ class os:
     def browse_package(self, desired_package: str):
         if self.booted:
             if desired_package in self.packages:
-                print(f"{desired_package} se encuentra en el sistema")
+                print(f"{desired_package} está instalado")
             else:
-                print("No se encuentran resultados")
+                print(f"{desired_package} no se encuentra en el sistema")
 
 
-os1 = os("os1", True, [], "bash", "1.0", "134.234.65.66")
+os1 = os("os1", True, [], "1.0", "134.234.65.66", 300)
 os1.boot()
 os1.login("Jaime", "J41m3")
 os1.show_information()
