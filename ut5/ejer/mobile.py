@@ -3,7 +3,7 @@ power_drainage = {"Samsung": 0.85, "Xiaomi": 1.00, "Nokia": 1.10, "Alcatel": 1.2
 
 class MobilePhone:
     def __init__(
-        self, manufacturer: str, screen_size: float, num_cores: int, power: int
+        self, manufacturer: str, screen_size: float, num_cores: int, power: float
     ):
         self.manufacturer = manufacturer
         self.screen_size = screen_size
@@ -17,7 +17,7 @@ class MobilePhone:
             not self.status
         elif not self.status:
             self.status = True
-            self.drain_power(10)
+            self.drain_power(20)
 
     def warn_power(self):
         if self.status:
@@ -34,16 +34,16 @@ class MobilePhone:
         self.warn_power()
 
     def install_app(self, *apps_to_be_installed: str):
-        for app in apps_to_be_installed:
-            if app in self.apps:
-                print(f"{app} ya está en el dispositivo")
-            else:
-                self.drain_power(30)
-                if self.status:
+        if self.status:
+            for app in apps_to_be_installed:
+                if app in self.apps:
+                    print(f"{app} ya está en el dispositivo")
+                else:
+                    self.drain_power(30)
                     self.apps.append(app)
 
     def uninstall_app(self, app: str):
-        self.drain_power(15)
+        self.drain_power(10)
         if self.status:
             self.apps.remove(app)
 
