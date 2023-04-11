@@ -61,7 +61,7 @@ class os:
     @check_status
     def show_information(self):
         print(
-            f"Nombre: {self.name}\nVersión: {self.version}\nIP: {self.ip}\nPaquetes instalados: {self.packages}\n"
+            f"Nombre: {self.name}\nVersión: {self.version}\nIP: {self.ip}\nPaquetes instalados: {self.packages}\nAlmacenamiento restante: {self.storage}"
         )
 
     @check_status
@@ -84,6 +84,7 @@ class os:
         for package in packages_to_be_uninstalled:
             if package in self.packages:
                 self.packages.remove(package)
+                self.storage += available_packages[package]
                 print(f"{package} se ha eliminado satisfactoriamente")
             else:
                 print(f"{package} no existe en el sistema")
