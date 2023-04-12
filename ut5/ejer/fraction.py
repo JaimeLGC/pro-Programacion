@@ -11,16 +11,21 @@ class Fraction:
         return a
 
     def simplify(self, num, den):
-        max_common_divisor = self.gcd(den, num)
-        s_num = num / max_common_divisor
-        s_den = den / max_common_divisor
+        gcd = self.gcd(den, num)
+        s_num = num / gcd
+        s_den = den / gcd
         return s_num, s_den
 
     def __add__(self, fraction):
         n_num = self.num * fraction.den + self.den * fraction.num
         n_den = self.den * fraction.den
         s_num, s_den = self.simplify(n_num, n_den)
-        return str(n_num + "/" + n_den)
+        return str(s_num + "/" + s_den)
 
     def __sub__(self, fraction):
-        max_common_divisor = self.gcd(self.den, fraction.den)
+        n_den = self.gcd(self.den, fraction.den)
+        if self.num >= fraction.num:
+            n_num = self.num - fraction.num
+        else:
+            n_num = fraction.num - self.num
+        return str(n_num + "/" + n_den)
