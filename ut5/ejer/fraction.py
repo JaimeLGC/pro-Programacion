@@ -22,10 +22,15 @@ class Fraction:
         s_num, s_den = self.simplify(n_num, n_den)
         return str(s_num + "/" + s_den)
 
-    def __sub__(self, fraction):
-        n_den = self.gcd(self.den, fraction.den)
-        if self.num >= fraction.num:
-            n_num = self.num - fraction.num
-        else:
-            n_num = fraction.num - self.num
+    # def __sub__(self, fraction):
+    #     n_den = self.gcd(self.den, fraction.den)
+    #     if self.num >= fraction.num:
+    #         n_num = self.num - fraction.num
+    #     else:
+    #         n_num = fraction.num - self.num
+    #     return str(n_num + "/" + n_den)
+
+    def __mul__(self, fraction):
+        n_num = self.num * fraction.num
+        n_den = self.den * fraction.den
         return str(n_num + "/" + n_den)
