@@ -19,7 +19,7 @@ class Date:
         Ojo con los años bisiestos.
         """
         self.year = year
-        if 1990 <= year <= 2050:
+        if 1900 <= year <= 2050:
             self.year = year
         else:
             self.year = 1900
@@ -35,7 +35,7 @@ class Date:
     def is_leap_year(self, year: int) -> bool:
         if year % 400 == 0:
             return True
-        if year % 4 == 0 and year % 100 == 0:
+        if year % 4 == 0 and year % 100 != 0:
             return True
         else:
             return False
@@ -53,11 +53,10 @@ class Date:
     def delta_days(self) -> int:
         """Número de días transcurridos desde el 1-1-1900 hasta la fecha"""
         past_days = 0
-        for y in range(self.year - 1900):
+        for y in range(1900, self.year):
             if self.is_leap_year(y) == True:
-                past_days += 366
-            else:
-                past_days += 365
+                past_days += 1
+            past_days += 365
         for m in range(self.month):
             if m in LONG_MONTHS.values():
                 past_days += 31
@@ -98,6 +97,6 @@ class Date:
     # operador < dice si una fecha es menor que otra
 
 
-fecha1 = Date(12, 7, 2003)
+fecha1 = Date(5, 5, 1999)
 dias = fecha1.delta_days()
 print(dias)
