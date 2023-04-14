@@ -13,7 +13,11 @@ FEBRUARY = 2
 
 class Date:
     def __init__(self, day: int, month: int, year: int):
-
+        """Validar día, mes y año. Se comprobará si la fecha es correcta
+        (entre el 1-1-1900 y el 31-12-2050); si el día no es correcto, lo pondrá a 1;
+        si el mes no es correcto, lo pondrá a 1; y si el año no es correcto, lo pondrá a 1900.
+        Ojo con los años bisiestos.
+        """
         self.year = year
         if 1990 <= year <= 2050:
             self.year = year
@@ -27,12 +31,6 @@ class Date:
             self.day = day
         else:
             self.day = 1
-
-        """Validar día, mes y año. Se comprobará si la fecha es correcta
-        (entre el 1-1-1900 y el 31-12-2050); si el día no es correcto, lo pondrá a 1;
-        si el mes no es correcto, lo pondrá a 1; y si el año no es correcto, lo pondrá a 1900.
-        Ojo con los años bisiestos.
-        """
 
     def is_leap_year(self, year: int) -> bool:
         if year % 400 == 0:
@@ -51,11 +49,27 @@ class Date:
             if self.is_leap_year(year):
                 return 29
             return 28
-        return None
 
     def delta_days(self) -> int:
         """Número de días transcurridos desde el 1-1-1900 hasta la fecha"""
-        return 1
+        past_days = 0
+        for y in range(self.year - 1900):
+            if self.is_leap_year(y) == True:
+                past_days += 366
+            else:
+                past_days += 365
+        for m in range(self.month):
+            if m in LONG_MONTHS.values():
+                past_days += 31
+            if m in SHORT_MONTHS.values():
+                past_days += 30
+            if m == 2:
+                if self.is_leap_year(self.year):
+                    past_days += 29
+                else:
+                    past_days += 28
+        past_days += self.day
+        return past_days
 
     def weekday(self) -> int:
         """día de la semana de la fecha (0 para domingo, ..., 6 para sábado).
@@ -84,5 +98,6 @@ class Date:
     # operador < dice si una fecha es menor que otra
 
 
-fecha1 = Date(29, 3, 1899)
-print(fecha1.day, fecha1.month, fecha1.year)
+fecha1 = Date(12, 7, 2003)
+dias = fecha1.delta_days()
+print(dias)
