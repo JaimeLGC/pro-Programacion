@@ -132,10 +132,40 @@ class Date:
         return f"{day} {self.day} de {month} de {self.year}"
 
     # operador + suma días a la fecha
+
     # operador - resta días a la fecha o calcula la diferencia entre dos fechas
+
     # operador == dice si dos fechas son iguales
+    def __eq__(self, date: Date):
+        return self == date
+
     # operador > dice si una fecha es mayor que otra
+    def __gt__(self, date):
+        if self.year > date.year:
+            return True
+        if self.year < date.year:
+            return False
+        else:
+            if self.month > date.month:
+                return True
+            if self.month < date.month:
+                return False
+            else:
+                return self.day > date.day
+
     # operador < dice si una fecha es menor que otra
+    def __lt__(self, date):
+        if date.year > self.year:
+            return True
+        if date.year < self.year:
+            return False
+        else:
+            if date.month > self.month:
+                return True
+            if date.month < self.month:
+                return False
+            else:
+                return date.day > self.day
 
 
 fecha1 = Date(2, 4, 2023)

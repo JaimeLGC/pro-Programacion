@@ -51,11 +51,10 @@ class Date:
             if self.is_leap_year(year):
                 return 29
             return 28
-        return None
 
     def delta_days(self) -> int:
         """Número de días transcurridos desde el 1-1-1900 hasta la fecha"""
-        return 1
+        
 
     def weekday(self) -> int:
         """día de la semana de la fecha (0 para domingo, ..., 6 para sábado).
