@@ -135,10 +135,6 @@ class Date:
 
     # operador - resta días a la fecha o calcula la diferencia entre dos fechas
 
-    # operador == dice si dos fechas son iguales
-    def __eq__(self, date: Date):
-        return self == date
-
     # operador > dice si una fecha es mayor que otra
     def __gt__(self, date):
         if self.year > date.year:
@@ -167,10 +163,20 @@ class Date:
             else:
                 return date.day > self.day
 
+    # operador == dice si dos fechas son iguales
+    def __eq__(self, date):
+        if self > date:
+            return False
+        if self < date:
+            return False
+        else:
+            return True
+
 
 fecha1 = Date(2, 4, 2023)
+fecha2 = Date(2, 4, 2023)
 dias = fecha1.delta_days()
 diasemana = fecha1.weekday()
 isweekend = fecha1.is_weekend()
 sdate = fecha1.short_date()
-print(str(fecha1))
+print(fecha1 == fecha2)
