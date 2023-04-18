@@ -1,27 +1,3 @@
-weekdays = [
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-    "Domingo",
-]
-
-MONTHS = {
-    1: "Enero",
-    2: "Febrero",
-    3: "Marzo",
-    4: "Abril",
-    5: "Mayo",
-    6: "Junio",
-    7: "Julio",
-    8: "Agosto",
-    9: "Septiebre",
-    10: "Octubre",
-    11: "Noviembre",
-    12: "Diciembre",
-}
 LONG_MONTHS = {
     "January": 1,
     "March": 3,
@@ -92,44 +68,53 @@ class Date:
                 else:
                     past_days += 28
         past_days += self.day
+        print(
+            f"Han pasado {past_days} días desde el 1-1-1900 hasta el {self.day}-{self.month}-{self.year}"
+        )
         return past_days
 
-    def weekday(self) -> str:
+    def weekday(self) -> int:
         """día de la semana de la fecha (0 para domingo, ..., 6 para sábado).
         El 1-1-1900 fue domingo."""
+        weekdays = [
+            "Lunes",
+            "Martes",
+            "Miércoles",
+            "Jueves",
+            "Viernes",
+            "Sábado",
+            "Domingo",
+        ]
         weekday_index = 0
         delta_counter = 1
-        while delta_counter <= self.delta_days():
+        passed_days = self.delta_days()
+        while delta_counter <= passed_days:
             delta_counter += 1
             weekday = weekdays[weekday_index]
             if weekday_index == 6:
                 weekday_index = 0
             else:
                 weekday_index += 1
-        return f"El {self.day}-{self.month}-{self.year} fue {weekday}"
+        print(f"El {self.day}-{self.month}-{self.year} fue {weekday}")
+        return weekday_index
 
     def is_weekend(self) -> bool:
         weekend = ["Viernes", "Sábado", "Domingo"]
         if self.weekday().split()[-1] in weekend:
+            print(f"El {self.day}-{self.month}-{self.year} fue fin de semana")
             return True
         else:
             return False
+            print(f"El {self.day}-{self.month}-{self.year} no fue fin de semana")
 
     def short_date(self) -> str:
         """02/09/2003"""
-        day = self.day
-        month = self.month
-        if self.day <= 9:
-            day = f"0{self.day}"
-        if self.month <= 9:
-            month = f"0{self.month}"
-        return f"{day}/{month}/{self.year}"
+        return "1"
 
     def __str__(self):
         """martes 2 de septiembre de 2003"""
-        day = self.weekday().split()[-1]
-        month = MONTHS[self.month]
-        return f"{day} {self.day} de {month} de {self.year}"
+        pass
+        return 1
 
     # operador + suma días a la fecha
     # operador - resta días a la fecha o calcula la diferencia entre dos fechas
@@ -138,9 +123,5 @@ class Date:
     # operador < dice si una fecha es menor que otra
 
 
-fecha1 = Date(2, 4, 2023)
-dias = fecha1.delta_days()
-diasemana = fecha1.weekday()
-isweekend = fecha1.is_weekend()
-sdate = fecha1.short_date()
-print(str(fecha1))
+fecha1 = Date(22, 4, 2023)
+fecha1.is_weekend()
