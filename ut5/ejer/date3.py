@@ -87,8 +87,7 @@ class Date:
         ]
         weekday_index = 0
         delta_counter = 1
-        passed_days = self.delta_days()
-        while delta_counter <= passed_days:
+        while delta_counter <= self.delta_days():
             delta_counter += 1
             weekday = weekdays[weekday_index]
             if weekday_index == 6:
@@ -124,4 +123,7 @@ class Date:
 
 
 fecha1 = Date(22, 4, 2023)
-fecha1.is_weekend()
+dias = fecha1.delta_days()
+diasemana = fecha1.weekday()
+isweekend = fecha1.is_weekend()
+print(isweekend)
