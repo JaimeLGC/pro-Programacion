@@ -1,37 +1,31 @@
+from __future__ import annotations
+
 weekdays = [
-    "Lunes",
-    "Martes",
-    "Miércoles",
-    "Jueves",
-    "Viernes",
-    "Sábado",
-    "Domingo",
+    "LUNES",
+    "MARTES",
+    "MIÉRCOLES",
+    "JUEVES",
+    "VIERNES",
+    "SÁBADO",
+    "DOMINGO",
 ]
 
 MONTHS = {
-    1: "Enero",
-    2: "Febrero",
-    3: "Marzo",
-    4: "Abril",
-    5: "Mayo",
-    6: "Junio",
-    7: "Julio",
-    8: "Agosto",
-    9: "Septiebre",
-    10: "Octubre",
-    11: "Noviembre",
-    12: "Diciembre",
+    1: "ENERO",
+    2: "FEBRERO",
+    3: "MARZO",
+    4: "ABRIL",
+    5: "MAYO",
+    6: "JUNIO",
+    7: "JULIO",
+    8: "AGOSTO",
+    9: "SEPTIEMBRE",
+    10: "OCTUBRE",
+    11: "NOVIEMBRE",
+    12: "DICIEMBRE",
 }
-LONG_MONTHS = {
-    "January": 1,
-    "March": 3,
-    "May": 5,
-    "July": 7,
-    "August": 8,
-    "October": 10,
-    "December": 12,
-}
-SHORT_MONTHS = {"April": 4, "June": 6, "September": 9, "November": 11}
+LONG_MONTHS = [1, 3, 5, 7, 8, 10, 12]
+SHORT_MONTHS = [4, 6, 9, 11]
 FEBRUARY = 2
 
 
@@ -51,12 +45,13 @@ class Date:
             self.month = month
         else:
             self.month = 1
-        if 0 < day <= self.days_in_month(month, year):
+        if 0 < day <= self.days_in_month:
             self.day = day
         else:
             self.day = 1
 
-    def is_leap_year(self, year: int) -> bool:
+    @staticmethod
+    def is_leap_year(year: int) -> bool:
         if year % 400 == 0:
             return True
         if year % 4 == 0 and year % 100 != 0:
@@ -64,13 +59,14 @@ class Date:
         else:
             return False
 
-    def days_in_month(self, month, year) -> int:
-        if month in LONG_MONTHS.values():
+    @property
+    def days_in_month(self) -> int:
+        if self.month in LONG_MONTHS:
             return 31
-        if month in SHORT_MONTHS.values():
+        if self.month in SHORT_MONTHS:
             return 30
-        if month == 2:
-            if self.is_leap_year(year):
+        if self.month == 2:
+            if self.is_leap_year(self.year):
                 return 29
             return 28
 
@@ -82,9 +78,9 @@ class Date:
                 past_days += 1
             past_days += 365
         for m in range(self.month):
-            if m in LONG_MONTHS.values():
+            if m in LONG_MONTHS:
                 past_days += 31
-            if m in SHORT_MONTHS.values():
+            if m in SHORT_MONTHS:
                 past_days += 30
             if m == 2:
                 if self.is_leap_year(self.year):
@@ -94,6 +90,7 @@ class Date:
         past_days += self.day
         return past_days
 
+    @property
     def weekday(self) -> str:
         """día de la semana de la fecha (0 para domingo, ..., 6 para sábado).
         El 1-1-1900 fue domingo."""
@@ -106,15 +103,17 @@ class Date:
                 weekday_index = 0
             else:
                 weekday_index += 1
-        return f"El {self.day}-{self.month}-{self.year} fue {weekday}"
+        return weekday_index
 
+    @property
     def is_weekend(self) -> bool:
         weekend = ["Viernes", "Sábado", "Domingo"]
-        if self.weekday().split()[-1] in weekend:
+        if self.weekday in weekend:
             return True
         else:
             return False
 
+    @property
     def short_date(self) -> str:
         """02/09/2003"""
         day = self.day
@@ -127,16 +126,21 @@ class Date:
 
     def __str__(self):
         """martes 2 de septiembre de 2003"""
-        day = self.weekday().split()[-1]
+        day = self.weekday
         month = MONTHS[self.month]
-        return f"{day} {self.day} de {month} de {self.year}"
+        return f"{day} {self.day} DE {month} DE {self.year}"
 
-    # operador + suma días a la fecha
+    def __add__(self, days: int) -> Date:
+        """Sumar un número de días a la fecha"""
+        ...
 
-    # operador - resta días a la fecha o calcula la diferencia entre dos fechas
+    def __sub__(self, other: Date | int) -> int | Date:
+        """Dos opciones:
+        1) Restar una fecha a otra fecha -> Número de días
+        2) Restar un número de días la fecha -> Nueva fecha"""
+        ...
 
-    # operador > dice si una fecha es mayor que otra
-    def __gt__(self, date):
+    def __gt__(self, date: Date) -> bool:
         if self.year > date.year:
             return True
         if self.year < date.year:
@@ -149,8 +153,7 @@ class Date:
             else:
                 return self.day > date.day
 
-    # operador < dice si una fecha es menor que otra
-    def __lt__(self, date):
+    def __lt__(self, date: Date) -> bool:
         if date.year > self.year:
             return True
         if date.year < self.year:
@@ -163,20 +166,19 @@ class Date:
             else:
                 return date.day > self.day
 
-    # operador == dice si dos fechas son iguales
-    def __eq__(self, date):
-        if self > date:
+    def __eq__(self, other: Date) -> bool:
+        if self > other:
             return False
-        if self < date:
+        if self < other:
             return False
         else:
             return True
 
 
-fecha1 = Date(2, 4, 2023)
+fecha1 = Date(8, 4, 2023)
 fecha2 = Date(2, 4, 2023)
-dias = fecha1.delta_days()
-diasemana = fecha1.weekday()
-isweekend = fecha1.is_weekend()
-sdate = fecha1.short_date()
-print(fecha1 == fecha2)
+dias = fecha1.delta_days
+diasemana = fecha1.weekday
+isweekend = fecha1.is_weekend
+sdate = fecha1.short_date
+print(diasemana)
