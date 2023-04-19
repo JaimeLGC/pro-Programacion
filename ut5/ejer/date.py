@@ -155,15 +155,15 @@ class Date:
                 if other > 365:
                     self.year -= 1
                     other -= 365
-                if other > self.days_in_month:
+                elif other > self.days_in_month:
                     self.month -= 1
                     if self.month <= 0:
                         self.year -= 1
                         self.month = 12
                     other -= self.days_in_month
-                if self.day - other > 0:
+                elif other < self.day:
                     self.day -= other
-                    other = 0
+
         return Date(self.day, self.month, self.year)
 
     def __gt__(self, date: Date) -> bool:

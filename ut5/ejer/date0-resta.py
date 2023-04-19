@@ -54,7 +54,6 @@ class Date:
 
     def delta_days(self) -> int:
         """Número de días transcurridos desde el 1-1-1900 hasta la fecha"""
-        
 
     def weekday(self) -> int:
         """día de la semana de la fecha (0 para domingo, ..., 6 para sábado).
@@ -85,3 +84,21 @@ class Date:
 
 fecha1 = Date(29, 3, 1899)
 print(fecha1.day, fecha1.month, fecha1.year)
+
+# if isinstance(other, int):
+#     while other > 0:
+#         if other > 365:
+#             self.year -= 1
+#             other -= 365
+#         elif other > self.days_in_month:
+#             self.month -= 1
+#             if self.month <= 0:
+#                 self.year -= 1
+#                 self.month = 12
+#             other -= self.days_in_month
+#         elif other < self.day:
+#             self.day -= other
+#             other = 0
+#         elif self.day < other < self.days_in_month:
+#             rest = other - self.day
+#             self.month -= 1
