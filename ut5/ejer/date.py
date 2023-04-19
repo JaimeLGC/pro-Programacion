@@ -131,7 +131,17 @@ class Date:
 
     def __add__(self, days: int) -> Date:
         """Sumar un número de días a la fecha"""
-        ...
+        if self.month == 13:
+            self.year += 1
+            self.month == 1
+        if days > 365:
+            self.year += 1
+            days -= 365
+        if days > self.days_in_month:
+            self.month += 1
+            days -= self.days_in_month
+        if self.day + days > self.days_in_month:
+            self.day += days
 
     def __sub__(self, other: Date | int) -> int | Date:
         """Dos opciones:
