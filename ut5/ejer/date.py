@@ -27,6 +27,7 @@ MONTHS = {
 LONG_MONTHS = [1, 3, 5, 7, 8, 10, 12]
 SHORT_MONTHS = [4, 6, 9, 11]
 FEBRUARY = 2
+YEAR_LENGTH = 365
 
 
 class Date:
@@ -74,8 +75,12 @@ class Date:
         for y in range(1900, self.year):
             if self.is_leap_year(y) == True:
                 past_days += 1
+<<<<<<< HEAD
             past_days += 365
         # Se cuentan los meses
+=======
+            past_days += YEAR_LENGTH
+>>>>>>> e32a8733608442f3917ff67883f8bfb9d25c7b72
         for m in range(self.month):
             if m in LONG_MONTHS:
                 past_days += 31
@@ -132,9 +137,9 @@ class Date:
             if self.month == 13:
                 self.year += 1
                 self.month == 1
-            if days > 365:
+            if days > YEAR_LENGTH:
                 self.year += 1
-                days -= 365
+                days -= YEAR_LENGTH
             if days > self.days_in_month:
                 self.month += 1
                 days -= self.days_in_month
@@ -142,6 +147,13 @@ class Date:
                 self.day += days
                 days = 0
         return Date(self.day, self.month, self.year)
+
+    @property
+    def reset_month(self) -> None:
+        self.month -= 1
+        if self.month <= 0:
+            self.year -= 1
+            self.month = 12
 
     def __sub__(self, other: Date | int) -> int | Date:
         """Dos opciones:
@@ -152,7 +164,26 @@ class Date:
             if difference < 0:
                 difference = -difference
             return difference
+<<<<<<< HEAD
         else:
+=======
+
+        if isinstance(other, int):
+            while other > 0:
+                while other > YEAR_LENGTH:
+                    self.year -= 1
+                    other -= YEAR_LENGTH
+                while YEAR_LENGTH > other > self.days_in_month:
+                    self.reset_month
+                    other -= self.days_in_month
+                if self.day - other <= 0:
+                    other -= self.day
+                    self.reset_month
+                    self.day = self.days_in_month
+                self.day -= other
+                other = 0
+
+>>>>>>> e32a8733608442f3917ff67883f8bfb9d25c7b72
             return Date(self.day, self.month, self.year)
 
     def __gt__(self, date: Date) -> bool:
