@@ -70,10 +70,12 @@ class Date:
     def get_delta_days(self) -> int:
         """Número de días transcurridos desde el 1-1-1900 hasta la fecha"""
         past_days = 0
+        # Se cuentan los años
         for y in range(1900, self.year):
             if self.is_leap_year(y) == True:
                 past_days += 1
             past_days += 365
+        # Se cuentan los meses
         for m in range(self.month):
             if m in LONG_MONTHS:
                 past_days += 31
@@ -84,6 +86,7 @@ class Date:
                     past_days += 29
                 else:
                     past_days += 28
+        # Se cuenta el resto de días
         past_days += self.day - 1
         return past_days
 
@@ -103,8 +106,8 @@ class Date:
 
     @property
     def is_weekend(self) -> bool:
-        weekend = [5, 6, 0]
-        return self.weekday in weekend
+        weekend = ["VIERNES", "SÄBADO", "DOMINGO"]
+        return weekdays[self.weekday] in weekend
 
     @property
     def short_date(self) -> str:
@@ -149,22 +152,8 @@ class Date:
             if difference < 0:
                 difference = -difference
             return difference
-
-        if isinstance(other, int):
-            while other > 0:
-                if other > 365:
-                    self.year -= 1
-                    other -= 365
-                elif other > self.days_in_month:
-                    self.month -= 1
-                    if self.month <= 0:
-                        self.year -= 1
-                        self.month = 12
-                    other -= self.days_in_month
-                elif other < self.day:
-                    self.day -= other
-
-        return Date(self.day, self.month, self.year)
+        else:
+            return Date(self.day, self.month, self.year)
 
     def __gt__(self, date: Date) -> bool:
         if self.year > date.year:
