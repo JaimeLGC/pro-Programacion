@@ -14,7 +14,7 @@ class File:
         return size
 
     def info(self) -> str:
-        print(vars(self))
+        f"{self.path} [size={self.size}B]"
 
 
 class MediaFile(File):
@@ -23,6 +23,11 @@ class MediaFile(File):
         self.codec = codec
         self.geoloc = geoloc
         self.duration = duration
+
+    def info(self) -> str:
+        print(
+            f"{self.path} [size={self.size}B]\nCodec: {self.codec}\nGeolocalization: {self.geoloc}\nDuration: {self.duration}s"
+        )
 
 
 class VideoFile(MediaFile):
