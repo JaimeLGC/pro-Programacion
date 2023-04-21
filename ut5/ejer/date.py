@@ -75,12 +75,8 @@ class Date:
         for y in range(1900, self.year):
             if self.is_leap_year(y) == True:
                 past_days += 1
-<<<<<<< HEAD
             past_days += 365
         # Se cuentan los meses
-=======
-            past_days += YEAR_LENGTH
->>>>>>> e32a8733608442f3917ff67883f8bfb9d25c7b72
         for m in range(self.month):
             if m in LONG_MONTHS:
                 past_days += 31
@@ -164,27 +160,22 @@ class Date:
             if difference < 0:
                 difference = -difference
             return difference
-<<<<<<< HEAD
-        else:
-=======
 
         if isinstance(other, int):
             while other > 0:
-                while other > YEAR_LENGTH:
+                if other > 365:
                     self.year -= 1
-                    other -= YEAR_LENGTH
-                while YEAR_LENGTH > other > self.days_in_month:
-                    self.reset_month
+                    other -= 365
+                elif other > self.days_in_month:
+                    self.month -= 1
+                    if self.month <= 0:
+                        self.year -= 1
+                        self.month = 12
                     other -= self.days_in_month
-                if self.day - other <= 0:
-                    other -= self.day
-                    self.reset_month
-                    self.day = self.days_in_month
-                self.day -= other
-                other = 0
+                elif other < self.day:
+                    self.day -= other
 
->>>>>>> e32a8733608442f3917ff67883f8bfb9d25c7b72
-            return Date(self.day, self.month, self.year)
+        return Date(self.day, self.month, self.year)
 
     def __gt__(self, date: Date) -> bool:
         if self.year > date.year:
