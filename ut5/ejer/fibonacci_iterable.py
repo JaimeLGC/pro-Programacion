@@ -32,4 +32,4 @@ class Fibonacci:
 
 
 def run(n: int):
-    pass
+    return Fibonacci(n)
