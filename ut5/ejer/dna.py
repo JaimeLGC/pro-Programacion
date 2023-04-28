@@ -17,21 +17,24 @@ class DNA:
     def __len__(self):
         return len(self.sequence)
 
+    def total(self, base: str):
+        return len(list(element for element in self.sequence if element == base))
+
     @property
     def total_adenine(self):
-        return len(list(element for element in self.sequence if element == "A"))
+        return self.total("A")
 
     @property
     def total_thymine(self):
-        return len(list(element for element in self.sequence if element == "T"))
+        return self.total("T")
 
     @property
     def total_cytosine(self):
-        return len(list(element for element in self.sequence if element == "C"))
+        return self.total("C")
 
     @property
     def total_guanine(self):
-        return len(list(element for element in self.sequence if element == "G"))
+        return self.total("G")
 
     def __add__(self, dna: DNA) -> str:
         addition = ""
