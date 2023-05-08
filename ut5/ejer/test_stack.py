@@ -124,9 +124,9 @@ def test_stack_length(stack1: IntegerStack, stack3: IntegerStack):
 def test_stack_string_representation(stack3: IntegerStack):
     assert (
         str(stack3)
-        == '''10
+        == """10
 100
-1000'''
+1000"""
     )
 
 
@@ -148,7 +148,7 @@ def test_iterate_stack(stack3: IntegerStack):
 
 def test_dump_stack_to_file(stack3: IntegerStack):
     try:
-        path = Path('stack.dat')
+        path = Path("stack.dat")
         stack3.dump_to_file(path)
         assert path.read_text() == str(stack3)
     except Exception as err:
@@ -159,9 +159,9 @@ def test_dump_stack_to_file(stack3: IntegerStack):
 
 def test_load_stack_from_file():
     try:
-        path = Path('stack.dat')
+        path = Path("stack.dat")
         items = list(range(1, 26))
-        path.write_text('\n'.join(str(item) for item in items))
+        path.write_text("\n".join(str(item) for item in items))
         stack = IntegerStack.load_from_file(path)
         assert stack.items == items
         assert stack.max_size == 40
