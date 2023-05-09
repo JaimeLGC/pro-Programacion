@@ -17,8 +17,7 @@ class IntegerStack:
         return result
 
     def top(self) -> int:
-        if self.items[0]:
-            return self.items[0]
+        return self.items[0]
 
     def is_empty(self) -> bool:
         return not self.items
