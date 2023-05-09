@@ -84,5 +84,6 @@ class IntegerStackIterator:
     def __next__(self) -> int:
         if self.pointer >= len(self.stack):
             raise StopIteration
+        result = self.stack.items[self.pointer]
         self.pointer += 1
-        return self.pointer
+        return result
