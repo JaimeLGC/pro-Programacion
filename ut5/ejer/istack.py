@@ -65,9 +65,12 @@ class IntegerStack:
 
     def __add__(self, other: IntegerStack) -> IntegerStack:
         """La segunda pila va "encima" de la primera"""
-        result = IntegerStack(max_size=(len(self.items) + len(other.items)))
-        result.items += other.items
-        result.items += self.items
+        stack = IntegerStack()
+        stack.items = other.items
+        for item in self.items:
+            stack.items.append(item)
+        stack.max_size = len(stack)
+        return stack
 
     def __iter__(self) -> IntegerStackIterator:
         return IntegerStackIterator(self)

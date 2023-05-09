@@ -90,9 +90,12 @@ class IntegerQueue:
         - La segunda cola va "detrás" de la primera
         - El tamaño máximo de la cola resultante es la suma de los tamaños
         máximos de cada cola."""
-        result = IntegerQueue(max_size=(len(self.items) + len(other.items)))
-        result.items += other.items
-        result.items += self.items
+        queue = IntegerQueue()
+        queue.items = self.items
+        for item in other.items:
+            queue.items.append(item)
+        queue.max_size = len(queue)
+        return queue
 
     def __iter__(self) -> IntegerQueueIterator:
         return IntegerQueueIterator(self)
