@@ -26,7 +26,7 @@ class IntegerStack:
         return len(self.items) == self.max_size
 
     def expand(self, factor: int = 2) -> None:
-        self.max_size = self.max_size * factor
+        self.max_size *= factor
 
     def dump_to_file(self, path: str) -> None:
         with open(path, "w") as f:
@@ -37,8 +37,12 @@ class IntegerStack:
         """Crea una pila desde un fichero. Si la pila se llena al ir añadiendo elementos
         habrá que expandir con los valores por defecto"""
         with open(path, "r") as f:
-            stack = IntegerStack(max_size=len(f.readlines()))
-            stack.items = f.readlines()
+            items = f.readlines()
+            stack = IntegerStack()
+            for item in items:
+                if len(stack) == stack.max_size:
+                    stack.expand()
+                stack.items.append(int(item))
             return stack
 
     def __getitem__(self, index: int) -> int:

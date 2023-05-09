@@ -41,7 +41,7 @@ class IntegerQueue:
 
     def expand(self, factor: int = 2) -> None:
         """Expande el tamaño máximo de la cola en el factor indicado"""
-        self.max_size = self.max_size * factor
+        self.max_size *= factor
 
     def dump_to_file(self, path: str) -> None:
         """Vuelca la cola a un fichero.
@@ -59,9 +59,12 @@ class IntegerQueue:
         por defecto"""
         with open(path, "r") as f:
             items = f.readline().split(",")
-            stack = IntegerQueue(max_size=len(items))
-            stack.items = list(int(item) for item in items)
-            return stack
+            queue = IntegerQueue()
+            for item in items:
+                if len(queue) == queue.max_size:
+                    queue.expand()
+                queue.enqueue(int(item))
+            return queue
 
     def __getitem__(self, index: int) -> int:
         """Devuelve el elemento de la cola en el índice indicado"""
