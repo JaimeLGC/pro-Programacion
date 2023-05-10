@@ -23,6 +23,12 @@ class Card:
     A_VALUE = 1
     K_VALUE = 13
     GLYPHS = load_card_glyphs()
+    SPECIAL_SYMBOL = [
+        "A" = 1,
+        "J" = 11,
+        "Q" = 12,
+        "K" = 13
+    ]
 
     def __init__(self, value: int | str, suit: str):
         """Notas:
@@ -44,7 +50,10 @@ class Card:
         """Devuelve el valor (numérico) de la carta para comparar con otras.
         Tener en cuenta el AS."""
         for symbol in self.symbols:
-            if symbol == self.value and isinstance(symbol, int):
+            if symbol == self.value:
+                if isinstance(symbol, int):
+                    return symbol
+                else:
 
 
     def __repr__(self):
