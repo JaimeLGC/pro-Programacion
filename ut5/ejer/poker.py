@@ -10,10 +10,7 @@ def load_card_glyphs(path: str = "cards.dat") -> dict[str, str]:
         for line in f:
             stick, value = line.split(":")
             cards[stick] = value
-    print(cards)
-
-
-load_card_glyphs()
+    return cards
 
 
 class Card:
@@ -46,7 +43,9 @@ class Card:
     def cmp_value(self) -> int:
         """Devuelve el valor (numérico) de la carta para comparar con otras.
         Tener en cuenta el AS."""
-        ...
+        for symbol in self.symbols:
+            if symbol == self.value and isinstance(symbol, int):
+
 
     def __repr__(self):
         """Devuelve el glifo de la carta"""
