@@ -39,16 +39,17 @@ class Card:
                 f"🃏 Invalid card: {repr(suit)} is not a supported suit"
             )
 
-        if value in list(self.SYMBOLS):
-            self.value = list(self.SYMBOLS)[int(value)]
-        else:
-            self.value = int(value)
+        self.value = value
         self.suit = suit
 
     @property
     def cmp_value(self) -> int:
         """Devuelve el valor (numérico) de la carta para comparar con otras.
         Tener en cuenta el AS."""
+        if self.value in list(self.SYMBOLS):
+            self.value = list(self.SYMBOLS)[int(self.value) - 1]
+        else:
+            self.value = int(self.value)
         return self.value
 
     def __repr__(self):
@@ -69,21 +70,21 @@ class Card:
 
     def __add__(self, other: Card) -> Card:
         """Suma de dos cartas"""
-        if self.value >= other.value:
+        if self.cmp_value >= other.cmp_value:
             suit = self.suit
         else:
             suit = other.suit
+            
+        result = self.cmp_value + other.cmp_value
+        if result > self.K_VALUE:
+            result = "A"
+        else:
+            result = self.SYMBOLS[result - 1]
 
-        value = self.cmp_value + other.cmp_value
-        if not self.is_ace():
-            value = self.SYMBOLS[value + 1]
-
-        return Card(value, suit)
+        return Card(result, suit)
 
     def is_ace(self) -> bool:
         """Indica si una carta es un AS"""
-        if self.value > 13:
-            self.value = "A"
         return self.value == "A"
 
     @classmethod
