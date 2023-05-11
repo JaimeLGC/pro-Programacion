@@ -9,7 +9,7 @@ def load_card_glyphs(path: str = "cards.dat") -> dict[str, str]:
         cards = {}
         for line in f:
             stick, value = line.strip().split(":")
-            cards[stick] = value.split(',')
+            cards[stick] = value.split(",")
     return cards
 
 
@@ -25,16 +25,22 @@ class Card:
     GLYPHS = load_card_glyphs()
     SUITS = {CLUBS, DIAMONDS, HEARTS, SPADES}
 
-    def __init__(self, value: int | str, suit: str):    
+    def __init__(self, value: int | str, suit: str):
         if isinstance(value, str) and value not in self.SYMBOLS:
-            raise InvalidCardError(f'🃏 Invalid card: {repr(value)} is not a supported symbol')
-        if value not in range(14) or value == 0:
-            raise InvalidCardError(f'🃏 Invalid card: {repr(value)} is not a supported value')
+            raise InvalidCardError(
+                f"🃏 Invalid card: {repr(value)} is not a supported symbol"
+            )
+        if int(value) not in range(14) or int(value) <= 0:
+            raise InvalidCardError(
+                f"🃏 Invalid card: {repr(value)} is not a supported value"
+            )
         if suit not in self.SUITS:
-            raise InvalidCardError(f'🃏 Invalid card: {repr(suit)} is not a supported suit')
-        
+            raise InvalidCardError(
+                f"🃏 Invalid card: {repr(suit)} is not a supported suit"
+            )
+
         if value in list(self.SYMBOLS):
-            self.value = list(self.SYMBOLS)[value]
+            self.value = list(self.SYMBOLS)[int(value)]
         else:
             self.value = int(value)
         self.suit = suit
@@ -44,7 +50,7 @@ class Card:
         """Devuelve el valor (numérico) de la carta para comparar con otras.
         Tener en cuenta el AS."""
         return self.value
-            
+
     def __repr__(self):
         """Devuelve el glifo de la carta"""
         return self.GLYPHS[self.suit][self.cmp_value - 1]
@@ -65,23 +71,25 @@ class Card:
         """Suma de dos cartas"""
         if self.value >= other.value:
             suit = self.suit
-        else: 
+        else:
             suit = other.suit
-        
+
         value = self.cmp_value + other.cmp_value
         if not self.is_ace():
             value = self.SYMBOLS[value + 1]
-            
+
+        return Card(value, suit)
+
     def is_ace(self) -> bool:
         """Indica si una carta es un AS"""
         if self.value > 13:
-            self.value = 'A'
-        return self.value == 'A'
+            self.value = "A"
+        return self.value == "A"
 
     @classmethod
     def get_available_suits(cls) -> str:
         """Devuelve todos los palos como una cadena de texto"""
-        return f'{cls.CLUBS}{cls.DIAMONDS}{cls.HEARTS}{cls.SPADES}'
+        return f"{cls.CLUBS}{cls.DIAMONDS}{cls.HEARTS}{cls.SPADES}"
 
     @classmethod
     def get_cards_by_suit(cls, suit: str):
@@ -90,5 +98,5 @@ class Card:
 
 
 class InvalidCardError(Exception):
-    def __init__(self, message='🃏 Invalid card'):
+    def __init__(self, message="🃏 Invalid card"):
         super().__init__(message)
