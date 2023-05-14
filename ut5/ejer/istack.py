@@ -60,7 +60,7 @@ class IntegerStack:
     def __str__(self):
         result = []
         for item in self.items:
-            result.append(f"{item}")
+            result.append(str(item))
         return "\n".join(result)
 
     def __add__(self, other: IntegerStack) -> IntegerStack:
