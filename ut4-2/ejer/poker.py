@@ -9,7 +9,7 @@ def load_card_glyphs(path: str = "cards.dat") -> dict[str, str]:
         cards = {}
         for line in f:
             stick, value = line.strip().split(":")
-            cards[stick] = value.split(",")
+            cards[stick] = value
     return cards
 
 
@@ -74,7 +74,7 @@ class Card:
             suit = self.suit
         else:
             suit = other.suit
-            
+
         result = self.cmp_value + other.cmp_value
         if result > self.K_VALUE:
             result = "A"
@@ -101,3 +101,6 @@ class Card:
 class InvalidCardError(Exception):
     def __init__(self, message="🃏 Invalid card"):
         super().__init__(message)
+
+
+print(Card.GLYPHS)
