@@ -1,0 +1,15 @@
+from __future__ import annotations
+import sqlite3
+
+con = sqlite3.connect("sql.db")
+cur = con.cursor()
+
+sql = """CREATE TABLE pyversions (
+            branch CHAR PRIMARY KEY,
+            released_at_year INTEGER,
+            released_at_month INTEGER,
+            release_manager CHAR
+        )"""
+sql1 = 'INSERT INTO pyversions VALUES ("2.6", 2008, 10, "Barry Warsaw")'
+cur.execute("select * from pyversions")
+con.commit()
