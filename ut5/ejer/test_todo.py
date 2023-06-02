@@ -3,7 +3,7 @@ import typing
 from pathlib import Path
 
 import pytest
-from ut5.ejer.todo1 import Task, ToDo
+from todo import Task, ToDo
 
 TEST_DB_PATH = 'test_todo.db'
 
