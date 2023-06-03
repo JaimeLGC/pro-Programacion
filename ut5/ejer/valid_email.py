@@ -1,16 +1,22 @@
 import re
 
-regex = r""
+regex = r"(\w+@\D+.(?:com|es))"
 
-mail = "welopeste1@gmailcom"
-
-
-def check_mail(mail: str) -> None:
-    if m := re.match(regex, mail):
-        print(f"{mail} es un correo válido")
-        print(m.span())
-    else:
-        print(f"{mail} no es un correo válido")
+mails = (
+    "welopeste1@gmail.com",
+    "welopeste1gmail.com",
+    "gmail.com",
+    "@gmail.com",
+    "welo@12.com",
+)
 
 
-check_mail(mail)
+def check_mail(mails: tuple) -> None:
+    for mail in mails:
+        if re.match(regex, mail):
+            print(f"{mail} es un correo válido")
+        else:
+            print(f"{mail} no es un correo válido")
+
+
+check_mail(mails)
