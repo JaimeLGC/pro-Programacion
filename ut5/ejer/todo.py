@@ -36,9 +36,9 @@ class Task:
             f'UPDATE tasks SET name="{self.name}", done={self.done} WHERE id={self.id}'
         )
         self.con.commit()
-        #---------------------------
+        # ---------------------------
         self.id = Task.cur.lastrowid
-        #---------------------------
+        # ---------------------------
 
     def check(self):
         """Marca la tarea como completada. Haz uso también de .update()"""

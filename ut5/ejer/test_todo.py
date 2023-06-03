@@ -5,7 +5,7 @@ from pathlib import Path
 import pytest
 from todo import Task, ToDo
 
-TEST_DB_PATH = 'test_todo.db'
+TEST_DB_PATH = "test_todo.db"
 
 # **************************************************************
 # FIXTURES
@@ -16,10 +16,10 @@ TEST_DB_PATH = 'test_todo.db'
 def create_test_database():
     Path(TEST_DB_PATH).unlink(missing_ok=True)
     con = sqlite3.connect(TEST_DB_PATH)
-    sql = '''CREATE TABLE tasks (
+    sql = """CREATE TABLE tasks (
         id INTEGER PRIMARY KEY,
         name CHAR,
-        done INTEGER)'''
+        done INTEGER)"""
     cur = con.cursor()
     cur.execute(sql)
     con.commit()
@@ -30,28 +30,28 @@ def create_test_database():
 
 @pytest.fixture(autouse=True)
 def make_db_attrs_use_test_database(monkeypatch: pytest.MonkeyPatch):
-    monkeypatch.setattr(Task, 'con', sqlite3.connect(TEST_DB_PATH))
-    monkeypatch.setattr(Task.con, 'row_factory', sqlite3.Row)
-    monkeypatch.setattr(Task, 'cur', Task.con.cursor())
+    monkeypatch.setattr(Task, "con", sqlite3.connect(TEST_DB_PATH))
+    monkeypatch.setattr(Task.con, "row_factory", sqlite3.Row)
+    monkeypatch.setattr(Task, "cur", Task.con.cursor())
 
-    monkeypatch.setattr(ToDo, 'con', sqlite3.connect(TEST_DB_PATH))
-    monkeypatch.setattr(ToDo.con, 'row_factory', sqlite3.Row)
-    monkeypatch.setattr(ToDo, 'cur', ToDo.con.cursor())
+    monkeypatch.setattr(ToDo, "con", sqlite3.connect(TEST_DB_PATH))
+    monkeypatch.setattr(ToDo.con, "row_factory", sqlite3.Row)
+    monkeypatch.setattr(ToDo, "cur", ToDo.con.cursor())
 
 
 @pytest.fixture
 def task1():
-    return Task('Estudiar programación')
+    return Task("Estudiar programación")
 
 
 @pytest.fixture
 def task2():
-    return Task('Estudiar bases de datos', True)
+    return Task("Estudiar bases de datos", True)
 
 
 @pytest.fixture
 def task3():
-    return Task('Estudiar sistemas informáticos', True, 55)
+    return Task("Estudiar sistemas informáticos", True, 55)
 
 
 @pytest.fixture
@@ -79,15 +79,15 @@ def test_task_class_has_db_attrs():
 
 
 def test_build_task(task1: Task, task2: Task, task3: Task):
-    assert task1.name == 'Estudiar programación'
+    assert task1.name == "Estudiar programación"
     assert task1.done is False
     assert task1.id == -1
 
-    assert task2.name == 'Estudiar bases de datos'
+    assert task2.name == "Estudiar bases de datos"
     assert task2.done is True
     assert task2.id == -1
 
-    assert task3.name == 'Estudiar sistemas informáticos'
+    assert task3.name == "Estudiar sistemas informáticos"
     assert task3.done is True
     assert task3.id == 55
 
@@ -109,10 +109,10 @@ def test_save_task(task1: Task, task2: Task, task3: Task):
 def test_update_task(task1: Task):
     task1.save()
     task_id = task1.id
-    task1.name = 'Refactorizar código'
+    task1.name = "Refactorizar código"
     task1.done = True
     task1.update()
-    assert task1.name == 'Refactorizar código'
+    assert task1.name == "Refactorizar código"
     assert task1.done is True
     assert task1.id == task_id
 
@@ -123,8 +123,8 @@ def test_check_task(task1: Task, db_con: sqlite3.Connection):
     task1.check()
     assert task1.done is True
     cur = db_con.cursor()
-    result = cur.execute('SELECT * FROM tasks WHERE id=?', (task1.id,))
-    assert result.fetchone()['done'] == 1
+    result = cur.execute("SELECT * FROM tasks WHERE id=?", (task1.id,))
+    assert result.fetchone()["done"] == 1
 
 
 def test_uncheck_task(task2: Task, db_con: sqlite3.Connection):
@@ -133,26 +133,26 @@ def test_uncheck_task(task2: Task, db_con: sqlite3.Connection):
     task2.uncheck()
     assert task2.done is False
     cur = db_con.cursor()
-    result = cur.execute('SELECT * FROM tasks WHERE id=?', (task2.id,))
-    assert result.fetchone()['done'] == 0
+    result = cur.execute("SELECT * FROM tasks WHERE id=?", (task2.id,))
+    assert result.fetchone()["done"] == 0
 
 
 def test_task_representation(task1: Task, task2: Task, task3: Task):
     task1.save()
-    assert repr(task1) == '⎕ Estudiar programación (id=1)'
+    assert repr(task1) == "⎕ Estudiar programación (id=1)"
 
     task2.save()
-    assert repr(task2) == '✔ Estudiar bases de datos (id=2)'
+    assert repr(task2) == "✔ Estudiar bases de datos (id=2)"
 
     task3.save()
-    assert repr(task3) == '✔ Estudiar sistemas informáticos (id=3)'
+    assert repr(task3) == "✔ Estudiar sistemas informáticos (id=3)"
 
 
 def test_build_task_from_db_row(task1: Task, db_con: sqlite3.Connection):
     cur = db_con.cursor()
-    sql = 'INSERT INTO tasks(name, done) VALUES(?, ?)'
+    sql = "INSERT INTO tasks(name, done) VALUES(?, ?)"
     cur.execute(sql, (task1.name, task1.done))
-    sql = 'SELECT * FROM tasks WHERE id=?'
+    sql = "SELECT * FROM tasks WHERE id=?"
     result = cur.execute(sql, (1,))
     row = result.fetchone()
     task1_copy = Task.from_db_row(row)
@@ -215,8 +215,8 @@ def test_get_pending_tasks(task1: Task, task2: Task, task3: Task, todo: ToDo):
 
 
 def test_add_task(todo: ToDo, db_con: sqlite3.Connection):
-    todo.add_task('Test1')
-    result = db_con.cursor().execute('SELECT * FROM tasks WHERE name=?', ('Test1',))
+    todo.add_task("Test1")
+    result = db_con.cursor().execute("SELECT * FROM tasks WHERE name=?", ("Test1",))
     assert len(result.fetchall()) == 1
 
 
@@ -224,13 +224,13 @@ def test_complete_task(todo: ToDo, task1: Task, db_con: sqlite3.Connection):
     assert task1.done is False
     task1.save()
     todo.complete_task(1)
-    result = db_con.cursor().execute('SELECT * FROM tasks WHERE id=1')
-    assert result.fetchone()['done'] == 1
+    result = db_con.cursor().execute("SELECT * FROM tasks WHERE id=1")
+    assert result.fetchone()["done"] == 1
 
 
 def test_reopen_task(todo: ToDo, task2: Task, db_con: sqlite3.Connection):
     assert task2.done is True
     task2.save()
     todo.reopen_task(1)
-    result = db_con.cursor().execute('SELECT * FROM tasks WHERE id=1')
-    assert result.fetchone()['done'] == 0
+    result = db_con.cursor().execute("SELECT * FROM tasks WHERE id=1")
+    assert result.fetchone()["done"] == 0
