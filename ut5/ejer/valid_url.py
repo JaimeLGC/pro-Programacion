@@ -1,8 +1,8 @@
 import re
 
-regex = r""
+regex = r"(^http+s?://\D+.{1}\D+.{1}\D+)"
 
-urls = ()
+urls = ("https://aprendepython.es/stdlib/text_processing/re/", "uerrele")
 
 
 def check_mail(urls: tuple) -> None:
