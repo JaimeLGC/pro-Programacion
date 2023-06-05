@@ -97,8 +97,7 @@ class ToDo:
 
     def add_task(self, name: str):
         '''Añade la tarea con nombre "name"'''
-        task = Task(name)
-        task.save()
+        Task(name).save()
 
     def complete_task(self, task_id: int):
         """Marca la tarea con identificador "task_id" como completada"""
