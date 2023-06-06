@@ -1,10 +1,10 @@
 class File:
     def __init__(self, path: str):
         self.path = path
-        self.contents = ""
+        self.contents = []
 
     def add_content(self, content: str):
-        self.contents += content
+        self.contents.append(content)
 
     @property
     def size(self):
@@ -22,11 +22,14 @@ class MediaFile(File):
         self.codec = codec
         self.geoloc = geoloc
         self.duration = duration
-        self.contents = ""
 
     @property
     def info(self):
-        return f"{self.path} [size={self.size}B]\nCodec: {self.codec}\nGeolocalization: {self.geoloc}\nDuration: {self.duration}s"
+        return (
+            super().info
+            + "\n"
+            + f"Codec: {self.codec}\nGeolocalization: {self.geoloc}\nDuration: {self.duration}s"
+        )
 
 
 class VideoFile(MediaFile):
@@ -40,8 +43,7 @@ class VideoFile(MediaFile):
     ):
         super().__init__(path, codec, geoloc, duration)
         self.dimensions = dimensions
-        self.contents = ""
 
     @property
     def info(self):
-        return f"{self.path} [size={self.size}B]\nCodec: {self.codec}\nGeolocalization: {self.geoloc}\nDuration: {self.duration}s\nDimensions: {self.dimensions}"
+        return super().info + "\n" + f"Dimensions: {self.dimensions}"
