@@ -47,3 +47,16 @@ class VideoFile(MediaFile):
     @property
     def info(self):
         return super().info + "\n" + f"Dimensions: {self.dimensions}"
+
+
+class ElFilo(VideoFile):
+    def __init__(
+        self,
+        path: str,
+        codec: str,
+        geoloc: tuple[float],
+        duration: int,
+        dimensions: tuple[int],
+    ):
+        super().__init__(path, codec, geoloc, duration, dimensions)
+          
