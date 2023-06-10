@@ -1,0 +1,1 @@
+Directorio dedicado a la práctica de tests en python
