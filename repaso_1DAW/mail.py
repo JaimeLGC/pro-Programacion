@@ -31,18 +31,26 @@ class DbUtils:
         - con
         - cur
         '''
-        pass
+        self.con = sqlite3.connect(db_path)
+        self.con.row_factory = sqlite3.Row
+        self.cur = self.con.cursor()
 
 
 class Mail(DbUtils):
     def __init__(self, sender: str, recipient: str, subject: str, body: str):
         '''Construye un objeto Mail con los mismos atributos que parámetros.
         Esta clase hereda de DbUtils...'''
-        pass
+        super().__init__()
+        self.sender = sender
+        self.recipient = recipient
+        self.subject = subject
+        self.body = body
 
     def send(self) -> None:
         '''Simula el envío de este correo guardando todos sus campos en la tabla activity'''
-        pass
+        sql = 'INSERT INTO activity(sender, recipient, subject, body) VALUES(?, ?, ?, ?)'
+        self.cur.execute(sql, (self.sender, self.recipient, self.subject, self.body))
+        self.con.commit()
 
     def __str__(self):
         '''Representa un objeto de tipo Mail de la siguiente forma:
@@ -52,7 +60,8 @@ class Mail(DbUtils):
         <asunto pasado a mayúsculas>:
         <cuerpo del correo>
         '''
-        pass
+        return f'From: {self.sender}\nTo: {self.recipient}\n---\n{self.subject.upper()}:\n{self.body}'
+        
 
 
 class MailServer(DbUtils):
@@ -60,7 +69,10 @@ class MailServer(DbUtils):
         '''Construye un MailServer guardando los atributos de nombre de usuario y contraseña.
         También es necesario crear un atributo logged (booleano) que indique si se ha logeado.
         Esta clase hereda de DbUtils...'''
-        pass
+        super().__init__()
+        self.username = username
+        self.password = password
+        self.logged = False
 
     def login(self) -> None:
         '''Realiza/comprueba el login del usuario actualizado los atributos:
@@ -68,7 +80,14 @@ class MailServer(DbUtils):
         - logged
         La comprobación hay que hacerla consultando la base de datos.
         '''
-        pass
+        sql = 'SELECT * FROM login WHERE username = ? AND password = ?'
+        row = self.cur.execute(sql,(self.username, self.password)).fetchone()
+        if row is None:
+            self.logged = False
+            self.domain = ''
+        else:
+            self.logged = True
+            self.domain = row['domain']
 
     @staticmethod
     def login_required(method):
@@ -78,8 +97,12 @@ class MailServer(DbUtils):
 
         Ojo! La excepción recibe en su constructor tanto el mensaje de error
         como el objeto actual de tipo MailServer.'''
+        def wrapper(self, *args, **kwargs):
+            if self.logged:
+                return method(self, *args, **kwargs)
+            raise MailError(f'User "{self.username}" not logged in!', self)
+        return wrapper
 
-        pass
 
     @property
     def sender(self) -> str:
@@ -88,7 +111,8 @@ class MailServer(DbUtils):
         No hay que aplicar decorador pero debes saber que esta propiedad
         sólo va a funcionar si se ha hecho login previamente, ya que en otro caso
         no disponemos del dominio.'''
-        pass
+        return f'{self.username}@{self.domain}'
+        
 
     @login_required
     def send_mail(self, *, recipient: str, subject: str, body: str) -> None:
@@ -99,7 +123,11 @@ class MailServer(DbUtils):
 
         Ojo! La excepción recibe en el constructor tanto el mensaje
         como el objeto actual de tipo MailServer.'''
-        pass
+        regex = r'\w+@\w+\.\w+'
+        if not re.match(regex, recipient):
+            raise MailError(f'Recipient "{recipient}" has invalid mail format!', self)
+        mail = Mail(self.sender, recipient, subject, body)
+        mail.send()
 
     @login_required
     def get_emails(self, sent: bool = True):
@@ -107,10 +135,17 @@ class MailServer(DbUtils):
         - Si el parámetro sent está a True se devuelven los enviados por el usuario.
         - Si el parámetro sent está a False se devuelven los recibidos por el usuario.
         Debe ser una función generadora que devuelva objetos de tipo Mail.'''
-        pass
-
+        if sent:
+            sql = f"SELECT * FROM activity WHERE sender = '{self.sender}'"
+        else:
+            sql = f"SELECT * FROM activity WHERE recipient = '{self.sender}'"
+        res = self.cur.execute(sql).fetchall()
+        for row in res:
+            yield Mail(row['sender'], row['recipient'], row['subject'], row['body'])
 
 class MailError(Exception):
     def __init__(self, message: str, mail_handler: Mail | MailServer):
         '''Hay que cerrar la conexión a la base de datos'''
-        pass
+        mail_handler.con.close()
+        super().__init__(message)
+        
