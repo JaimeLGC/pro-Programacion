@@ -168,7 +168,10 @@ class Cart:
         Aprovecha métodos ya definidos en las clases anteriores para algunas de las
         partes que debes implementar."""
         sql = "INSERT INTO cart(user_id, product_id, qty) VALUES(?, ?, ?)"
-        res = cls.cur.execute(sql, (user_id, product_id, qty))
+        cls.cur.execute(sql, (user_id, product_id, qty))
+        cls.cur.execute(
+            f"UPDATE product SET stock = stock - {qty} where id = {product_id}"
+        )
         cls.con.commit()
 
     @classmethod
